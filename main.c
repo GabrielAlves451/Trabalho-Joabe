@@ -5,7 +5,21 @@
 #define coberto 0
 #define descoberto 1
 // TABULEIRO
-int jogo1[4][5]=
+int jogoF[4][4]=
+{
+    5,2,2,3,
+    5,6,7,8,
+    5,2,2,3,
+    5,6,7,8
+};
+int jogoCobertoF[4][4]=
+{
+    0,0,0,0,
+    0,0,0,0,
+    0,0,0,0,
+    0,0,0,0
+};
+int jogoM[4][5]=
 {
     5,2,2,3,4,
     5,6,7,8,9,
@@ -13,12 +27,26 @@ int jogo1[4][5]=
     5,6,7,8,9
 };
 // PARA SABER QUAIS JÁ FORAM DESCOBERTOS
-int jogoCoberto[4][5]=
+int jogoCobertoM[4][5]=
 {
     0,0,0,0,0,
     0,0,0,0,0,
     0,0,0,0,0,
     0,0,0,0,0
+};
+int jogoD[4][6]=
+{
+    5,2,2,3,4,6,
+    5,6,7,8,9,6,
+    5,2,2,3,4,7,
+    5,6,7,8,9,7
+};
+int jogoCobertoD[4][6]=
+{
+    0,0,0,0,0,0
+    0,0,0,0,0,0
+    0,0,0,0,0,0
+    0,0,0,0,0,0
 };
 
 // PROTÓTIPOS DAS FUNÇÕES
@@ -32,7 +60,7 @@ int validaCoord();
 int main(){
     menu();
 }
-// MONTA O TABULEIRO
+
 int menu(){
     char tecla;
 
@@ -63,7 +91,7 @@ int menu(){
 }
 int jogar(){
 int l, c, l2, c2;
-    int op, gameover=0;
+    int gameover=0;
     while(!gameover){
             validaCoord(&l,&c);
             validaCoord(&l2,&c2);
@@ -105,10 +133,10 @@ void monta(){
     }
     printf("\n\n");
 }
-// ANALIZA O JOGO
+// ANALISA O JOGO
 int analisa(){
-    int qt, l, c;
-    for(l=0; l<4; l++) for(c=0; c<5; c++) if(jogoCoberto[l][c]==descoberto) qt++;
+    int qt, row, column;
+    for(l=0; row<4; l++) for(c=0; column<5; c++) if(jogoCoberto[l][c]==descoberto) qt++;
     if(qt==20) return 1;
     return 0;
 }
