@@ -1,10 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<windows.h>
-
+#include<time.h>
 #define coberto 0
 #define descoberto 1
 // TABULEIRO
+clock_t start, end;
+double  tempo;
 int jogoF[4][4]=
 {
     5,2,2,3,
@@ -43,9 +45,9 @@ int jogoD[4][6]=
 };
 int jogoCobertoD[4][6]=
 {
-    0,0,0,0,0,0
-    0,0,0,0,0,0
-    0,0,0,0,0,0
+    0,0,0,0,0,0,
+    0,0,0,0,0,0,
+    0,0,0,0,0,0,
     0,0,0,0,0,0
 };
 
@@ -90,22 +92,27 @@ int menu(){
     }
 }
 int jogar(){
-int l, c, l2, c2;
+    int l, c, l2, c2;
     int gameover=0;
+    start = clock();
     while(!gameover){
             validaCoord(&l,&c);
             validaCoord(&l2,&c2);
             system("cls");
             monta();
-            if(jogo1[c-1][l-1] != jogo1[c2-1][l2-1]){
+            if(jogoM[l-1][c-1] != jogoM[l2-1][c2-1]){
                 printf("Errou!\n");
-                jogoCoberto[c-1][l-1]=coberto;
-                jogoCoberto[c2-1][l2-1]=coberto;
+                jogoCobertoM[l-1][c-1]=coberto;
+                jogoCobertoM[l2-1][c2-1]=coberto;
             }
             else printf("Boa!\n");
             Sleep(1000);
             gameover = analisa();
         }
+    end = clock();
+    tempo =((double)(end - start)) / CLOCKS_PER_SEC;;
+    printf("Tempo para ganhar: %f", tempo);
+    sleep(2000);
     system("cls");
     exit(2);
     return 0;
@@ -124,8 +131,8 @@ void monta(){
     for(l=0; l<4; l++){
             printf("%d ",l+1);
         for(c=0; c<5; c++){
-            if(jogoCoberto[l][c]==descoberto)
-                printf("%d|",jogo1[l][c]);
+            if(jogoCobertoM[l][c]==descoberto)
+                printf("%d|",jogoM[l][c]);
             else if(l<3) printf("_|");
             else printf(" |");
         }
@@ -135,8 +142,8 @@ void monta(){
 }
 // ANALISA O JOGO
 int analisa(){
-    int qt, row, column;
-    for(l=0; row<4; l++) for(c=0; column<5; c++) if(jogoCoberto[l][c]==descoberto) qt++;
+    int qt, l, c;
+    for(l=0; l<4; l++) for(c=0; c<5; c++) if(jogoCobertoM[l][c]==descoberto) qt++;
     if(qt==20) return 1;
     return 0;
 }
@@ -151,12 +158,12 @@ int validaCoord(int* linha,int* coluna){
         system("pause");
         goto clear;
             }
-    if(jogoCoberto[column-1][row-1]==descoberto){
+    if(jogoCobertoM[row-1][column-1]==descoberto){
         printf("Ops... Lugar ja descoberto.\n");
         system("pause");
         goto clear;
             }
-    jogoCoberto[column-1][row-1]=descoberto;
+    jogoCobertoM[row-1][column-1]=descoberto;
     *linha = row;
     *coluna = column;
 }
