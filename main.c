@@ -6,22 +6,9 @@
 #define descoberto 1
 // TABULEIRO
 clock_t start, end;
-double  tempo;
-int jogoF[4][4]=
-{
-    5,2,2,3,
-    5,6,7,8,
-    5,2,2,3,
-    5,6,7,8
-};
-int jogoCobertoF[4][4]=
-{
-    0,0,0,0,
-    0,0,0,0,
-    0,0,0,0,
-    0,0,0,0
-};
-int jogoM[4][5]=
+double time_used;
+
+int jogo[4][5]=
 {
     5,2,2,3,4,
     5,6,7,8,9,
@@ -29,26 +16,12 @@ int jogoM[4][5]=
     5,6,7,8,9
 };
 // PARA SABER QUAIS JÁ FORAM DESCOBERTOS
-int jogoCobertoM[4][5]=
+int jogoCoberto[4][5]=
 {
     0,0,0,0,0,
     0,0,0,0,0,
     0,0,0,0,0,
     0,0,0,0,0
-};
-int jogoD[4][6]=
-{
-    5,2,2,3,4,6,
-    5,6,7,8,9,6,
-    5,2,2,3,4,7,
-    5,6,7,8,9,7
-};
-int jogoCobertoD[4][6]=
-{
-    0,0,0,0,0,0,
-    0,0,0,0,0,0,
-    0,0,0,0,0,0,
-    0,0,0,0,0,0
 };
 
 // PROTÓTIPOS DAS FUNÇÕES
@@ -93,25 +66,25 @@ int menu(){
 }
 int jogar(){
     int l, c, l2, c2;
-    int gameover=0;
     start = clock();
+    int gameover=0;
     while(!gameover){
             validaCoord(&l,&c);
             validaCoord(&l2,&c2);
             system("cls");
             monta();
-            if(jogoM[l-1][c-1] != jogoM[l2-1][c2-1]){
+            if(jogo[l-1][c-1] != jogo[l2-1][c2-1]){
                 printf("Errou!\n");
-                jogoCobertoM[l-1][c-1]=coberto;
-                jogoCobertoM[l2-1][c2-1]=coberto;
+                jogoCoberto[l-1][c-1]=coberto;
+                jogoCoberto[l2-1][c2-1]=coberto;
             }
             else printf("Boa!\n");
             Sleep(1000);
             gameover = analisa();
         }
     end = clock();
-    tempo =((double)(end - start)) / CLOCKS_PER_SEC;;
-    printf("Tempo para ganhar: %f", tempo);
+    double time_used = ((double)(end - start))/CLOCKS_PER_SEC;
+    printf("Tempo: %.20f", time_used);
     sleep(2000);
     system("cls");
     exit(2);
@@ -131,8 +104,8 @@ void monta(){
     for(l=0; l<4; l++){
             printf("%d ",l+1);
         for(c=0; c<5; c++){
-            if(jogoCobertoM[l][c]==descoberto)
-                printf("%d|",jogoM[l][c]);
+            if(jogoCoberto[l][c]==descoberto)
+                printf("%d|",jogo[l][c]);
             else if(l<3) printf("_|");
             else printf(" |");
         }
@@ -143,7 +116,7 @@ void monta(){
 // ANALISA O JOGO
 int analisa(){
     int qt, l, c;
-    for(l=0; l<4; l++) for(c=0; c<5; c++) if(jogoCobertoM[l][c]==descoberto) qt++;
+    for(l=0; l<4; l++) for(c=0; c<5; c++) if(jogoCoberto[l][c]==descoberto) qt++;
     if(qt==20) return 1;
     return 0;
 }
@@ -158,12 +131,12 @@ int validaCoord(int* linha,int* coluna){
         system("pause");
         goto clear;
             }
-    if(jogoCobertoM[row-1][column-1]==descoberto){
+    if(jogoCoberto[row-1][column-1]==descoberto){
         printf("Ops... Lugar ja descoberto.\n");
         system("pause");
         goto clear;
             }
-    jogoCobertoM[row-1][column-1]=descoberto;
+    jogoCoberto[row-1][column-1]=descoberto;
     *linha = row;
     *coluna = column;
 }
